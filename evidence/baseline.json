@@ -1,0 +1,79 @@
+{
+  "ObservedDate": "2026-10-14",
+  "Membership": {
+    "Name": "PC01",
+    "Domain": "lab.example.test",
+    "PartOfDomain": true
+  },
+  "SecureChannel": true,
+  "SmbPort": {
+    "ComputerName": "DC01",
+    "RemotePort": 445,
+    "TcpTestSucceeded": true
+  },
+  "AnnaShare": {
+    "ObservedAtUtc": "2026-10-14T07:34:57.3284536Z",
+    "Identity": "LAB\\anna.lab",
+    "ExpectedAccess": "Allow",
+    "ReadSucceeded": true,
+    "WriteSucceeded": true,
+    "DeleteSucceeded": true,
+    "AccessDenied": false,
+    "FailureType": null,
+    "Passed": true
+  },
+  "PetrShare": {
+    "ObservedAtUtc": "2026-10-14T07:34:58.2421914Z",
+    "Identity": "LAB\\petr.lab",
+    "ExpectedAccess": "Deny",
+    "ReadSucceeded": false,
+    "WriteSucceeded": false,
+    "DeleteSucceeded": false,
+    "AccessDenied": true,
+    "FailureType": "System.UnauthorizedAccessException",
+    "Passed": true
+  },
+  "InteractiveSession": {
+    "Name": "PC01",
+    "UserName": "LAB\\anna.lab",
+    "Domain": "lab.example.test",
+    "PartOfDomain": true
+  },
+  "UserPolicy": {
+    "Name": "LAB-User-ControlPanel",
+    "GpoListed": true,
+    "NoControlPanel": 1,
+    "GpUpdateExitCode": 0,
+    "GpResultExitCode": 0,
+    "InteractiveControlPanelBlocked": true,
+    "Screenshot": "anna-control-panel-blocked.png"
+  },
+  "DnsIncident": {
+    "ObservedAtUtc": "2026-10-14T07:50:37.0863315Z",
+    "OriginalDns": [
+      "10.10.10.10"
+    ],
+    "FaultDns": "10.10.10.99",
+    "BaselineTarget": [
+      "dc01.lab.example.test"
+    ],
+    "FaultObserved": true,
+    "FaultError": "ERROR_TIMEOUT,Microsoft.DnsClient.Commands.ResolveDnsName",
+    "ExplicitCorrectServerTarget": [
+      "dc01.lab.example.test"
+    ],
+    "RestoredDns": [
+      "10.10.10.10"
+    ],
+    "RestoredTarget": [
+      "dc01.lab.example.test"
+    ],
+    "Passed": true
+  },
+  "FinalCheck": {
+    "SecureChannel": true,
+    "Dns": [
+      "10.10.10.10"
+    ]
+  }
+}

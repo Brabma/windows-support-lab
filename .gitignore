@@ -1,0 +1,17 @@
+/private/
+/iso/
+/vms/
+*.iso
+*.vdi
+*.vhd*
+*.vmdk
+*.vbox*
+*.sav
+*.nvram
+*.log
+*.evtx
+*.pcap*
+*.key
+*.pem
+.env*
+__pycache__/

@@ -1,6 +1,6 @@
-# Pojmy, které v projektu používám
+# Pojmy a jejich použití v labu
 
-Každý pojem je spojený s konkrétním nastavením nebo ověřením. „Později“ znamená, že jej dosud neprokazujeme praktickým výsledkem.
+Přehled propojuje pojmy s nastavením DC01 a PC01. DHCP, práce s událostmi a obnova ze zálohy jsou další pokusy.
 
 | Pojem | Význam v našem labu | Kde jej uvidím / ověřím |
 |---|---|---|
@@ -26,4 +26,4 @@ Každý pojem je spojený s konkrétním nastavením nebo ověřením. „Pozdě
 | Událost | záznam činnosti nebo chyby | konkrétní korelaci času v Event Vieweru doplníme později |
 | Snapshot a záloha | stav VM versus samostatná kopie pro obnovu | baseline-01 existuje; obnova zálohy je další etapa |
 
-Technické odkazy: [sources.md](sources.md). Definice se doplňuje skutečným nastavením a testem.
+Technické odkazy: [sources.md](sources.md).

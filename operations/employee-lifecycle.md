@@ -1,28 +1,23 @@
-# Pracovní požadavky: účet a přístupy zaměstnance
+# Účty, skupiny a přístup k souborům
 
-**Stav: připravený postup pro společnou práci. Celý nástup/odchod podle tohoto dokumentu zatím neproběhl.** Anna a Petr slouží k ověření rozdílných oprávnění; to není dokončený nový onboarding.
+Postup pro vyzkoušení životního cyklu doménového účtu. Anna a Petr už mají ověřená rozdílná oprávnění; následující celý postup s novým účtem ještě provedený není.
 
-## CHG-001: nástup zaměstnance
+## Vytvoření účtu
 
-Modelový požadavek: nový zaměstnanec potřebuje běžný doménový účet, přihlášení na PC01 a změny dokumentů v LabShare. Administrátorská práva nepotřebuje. Použít nový jednoznačný laboratorní účet; existující účty nepřepisovat.
+V Active Directory Users and Computers otevřít OU Users a vytvořit nový běžný testovací účet. Prohlédnout přihlašovací jméno, UPN a stav Enabled. Heslo se do dokumentace nezapisuje.
 
-| Krok správce | Co při něm sledovat | Důkaz dokončení |
-|---|---|---|
-| V AD Users and Computers najít OU Users | OU versus účet a skupina | objekt ve správné OU |
-| Vytvořit běžný účet | UPN, jméno a Enabled | vybrané vlastnosti bez hesla |
-| Přiřadit GG_LabStaff | přístup přes skupiny | členství a vnoření do DL |
-| Přihlásit uživatele na PC01 | doménový versus místní účet | whoami a kontakt s DC |
-| Otevřít sdílení a vytvořit testovací soubor | SMB a NTFS | čtení, zápis a odstranění probe |
-| Ověřit GPO | uživatelská OU a výsledná politika | gpresult a chování |
+Pak účet přidat do GG_LabStaff. Skupina je vnořená do DL_LabShare_Modify, které patří oprávnění ke sdílení. Díky tomu se při přidávání uživatele nemění ACL složky.
 
-Heslo zadat soukromě, neukládat do veřejného skriptu ani snímku. Reset hesla je samostatný požadavek; heslo stávajícího správce neměnit.
+## Ověření přístupu
 
-## CHG-002: změna pracovního zařazení
+Přihlásit nový účet na PC01 a pomocí whoami zkontrolovat identitu. Otevřít LabShare, přečíst welcome.txt a vytvořit vlastní testovací soubor. Po ověření jej smazat. Pod stejným účtem zkontrolovat také gpresult a chování Ovládacích panelů.
 
-Odebrat pouze přístupovou skupinu, vytvořit novou přihlašovací relaci a ověřit odmítnutí LabShare. Přihlášení do domény může dál fungovat. Tento rozdíl jsme technicky ověřili na Anně v [INC-002](../incidents/INC-002-share.md), celý požadavek s novým účtem teprve provedeme.
+## Odebrání skupiny
 
-## CHG-003: odchod zaměstnance
+Odebrat přístupovou skupinu, ukončit relaci a znovu se přihlásit. Přihlášení do domény má dál fungovat, ale přístup ke složce už má být odmítnutý. Tento rozdíl už zachycuje [INC-002](../incidents/INC-002-share.md) na účtu Anny.
 
-Zaznamenat původní stav a zakázat pouze nový testovací účet. Nemazat účet ani dokumenty. Při dostupném DC ověřit odmítnutí nového přihlášení; existující relace a cached logon nejsou totéž. Popsat návrat labu a ověřit funkčního správce.
+## Zakázání účtu
 
-Výstup každého požadavku: zadání → původní stav → změna → test → výsledek. Nevyplňovat úspěch před provedením.
+Na DC01 zakázat nový testovací účet a při dostupném řadiči zkusit nové přihlášení. Porovnat výsledek s pouhým odebráním skupiny. Již otevřená relace a uložené přihlášení jsou odlišné situace.
+
+Na závěr vrátit původní nastavení a zapsat výsledky jednotlivých kroků. U každého bude důležité vysvětlit, zda se měnila identita, možnost přihlášení, nebo přístup k souborům.

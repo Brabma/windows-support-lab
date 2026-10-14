@@ -17,4 +17,4 @@ Inspirace rozsahem scénářů: [Help-Desk-Homelab](https://github.com/RyanRFrec
 - [Group Policy overview](https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-policy/group-policy-overview): zásady a jejich aplikování.
 - [DHCP overview](https://learn.microsoft.com/en-us/windows-server/networking/technologies/dhcp/dhcp-top): automatická konfigurace a lease v plánované etapě.
 
-Pro strukturu propojující infrastrukturu a servisní úkoly byl znovu přečten [RyanRFrechette/Help-Desk-Homelab](https://github.com/RyanRFrechette/Help-Desk-Homelab). [john-boehler/active-directory-homelab](https://github.com/john-boehler/active-directory-homelab) sloužil jako příklad rozsahu AD, GPO a přístupů. Cizí snímky, kód ani výsledky nepřebíráme. Texty a nový skript vznikly pro tento lab. Dosavadní praktické kontroly provedl Codex; samostatné opakování autorem čeká.
+Další inspirace rozsahem AD, GPO a přístupových práv: [john-boehler/active-directory-homelab](https://github.com/john-boehler/active-directory-homelab). Snímky, skripty a výsledky v tomto repozitáři pocházejí z vlastního prostředí.

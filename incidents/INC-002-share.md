@@ -1,6 +1,6 @@
 # INC-002 — odepřený přístup ke sdílení
 
-**Stav: reprodukováno, opraveno a ověřeno Codexem 14. 10. 2026.** Ověření proběhlo příkazy spuštěnými na PC01 pod skutečnými účty Anny a Petra, pro každý test s novým přihlášením přes VirtualBox Guest Control. Interaktivní odhlášení a přihlášení na plochu během tohoto incidentu ani vlastní opakování uživatelem nejsou provedené.
+**Ověřeno 14. 10. 2026.** Pokus proběhl na PC01 pod účty Anny a Petra. Každý test použil nové příkazové přihlášení přes VirtualBox Guest Control; nešlo o odhlášení a přihlášení na plochu.
 
 ## Servisní záznam
 
@@ -34,4 +34,4 @@ Diagnóza: `whoami /groups` na PC01, členství v AD na DC01, SMB oprávnění a
 
 Oprava: vrátit původní členství; nová relace; zopakovat čtení i zápis. Petr musí nadále nemít přístup. Nedávat Everyone Full Control jen proto, aby test prošel.
 
-Vlastní opakování a vysvětlení uživatele: čeká. Vysvětli: Jak se liší oprávnění sdílení, NTFS a členství uživatele?
+Při opakování porovnej oprávnění sdílení, NTFS a členství uživatele. Která část se změnila a proč se výsledek projevil v nové relaci?

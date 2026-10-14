@@ -1,6 +1,6 @@
 # Opakovatelná provozní kontrola — 14. 10. 2026
 
-Ve skutečném DC01 i PC01 byl spuštěn přesný obsah veřejného [Test-LabHealth.ps1](../scripts/Test-LabHealth.ps1) v administrátorské příkazové relaci. Soukromý transport VirtualBox Guest Control předal skript a přihlašovací údaje; veřejný skript transport ani hesla neobsahuje. Uvnitř VM běžel Windows PowerShell. Výsledky zachytil Codex.
+Skript [Test-LabHealth.ps1](../scripts/Test-LabHealth.ps1) běžel na DC01 i PC01 v administrátorském Windows PowerShellu. Do obou strojů byl předaný přes VirtualBox Guest Control. Výsledky níže pocházejí z jeho skutečného běhu.
 
 | Stroj | Kontroly | Výsledek |
 |---|---|---|

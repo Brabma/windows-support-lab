@@ -1,51 +1,49 @@
-# Windows Support Lab — správa malé firemní sítě
+# Windows Server a sítě
 
-Praktický projekt Windows Serveru a Windows 11: sestavení malé domény, správa uživatelů a přístupů, nastavení pracovní stanice, síťová diagnostika a řešení servisních požadavků. Prostředí představuje malou kancelář se zaměstnanci Annou a Petrem.
+Dva virtuální počítače propojené do domény: Windows Server a pracovní stanice s Windows 11. Projekt slouží k praktickému zkoušení sítí, správy účtů, sdílení souborů, oprávnění a nastavení Windows. Dokumentace zachycuje zapojení, použité příkazy a výsledky jednotlivých pokusů.
 
-Projekt vzniká s pomocí Codexu. Dosavadní sestavení a ověřovací běhy provedl Codex; samostatné opakování autorem čeká. Výsledky popisují skutečný laboratorní stav, nikoli profesní praxi.
-
-## Prostředí
+## Zapojení
 
 ```mermaid
 flowchart LR
-  A[Anna: povolený přístup] --> P[PC01: Windows 11]
-  B[Petr: bez přístupu ke sdílení] --> P
-  P -->|DNS a doménové služby| D[DC01: Windows Server 2025 / AD DS + DNS + GPO]
-  P -->|SMB: TCP 445| F[Sdílení LabShare na DC01]
-  D --- F
+  P[PC01: Windows 11] -->|DNS a doménové služby| D[DC01: Windows Server 2025]
+  P -->|SMB: TCP 445| S[Sdílení LabShare na DC01]
+  D --- S
 ```
 
-VirtualBox Internal Network `windows-support-isolated`, síť `10.10.10.0/24`. DC01 má `10.10.10.10`, PC01 `10.10.10.20`; klient používá DNS server DC01. Doména `lab.example.test`. Adresy jsou zatím statické, bez DHCP, routeru a výchozí brány. [Úplná topologie](docs/architecture.md).
+Oba stroje běží ve VirtualBoxu ve společné vnitřní síti, oddělené od domácí LAN. Server má adresu `10.10.10.10`, klient `10.10.10.20`, oba s maskou `/24`. Doména se jmenuje `lab.example.test`. Adresy jsou nastavené ručně; DHCP ani router zatím nejsou součástí labu. [Podrobné zapojení](docs/architecture.md).
 
-## Co lze v projektu ověřit
+## Co už funguje
 
-Stav k 14. 10. 2026. „Ověřeno“ znamená skutečnou kontrolu v labu; „připraveno“ znamená popsanou další úlohu.
+- **Doména a DNS:** PC01 je připojený do domény a přes DNS najde její řadič.
+- **Účty a skupiny:** dva běžné účty mají rozdílný přístup ke stejnému sdílení. Anna může dokumenty číst a měnit, Petr přístup nemá.
+- **Sdílení a oprávnění:** přístup k LabShare určují skupiny v Active Directory a oprávnění SMB i NTFS.
+- **Skupinové zásady:** GPO omezuje přístup do Ovládacích panelů; ověřené je nastavení i skutečné chování ve Windows.
+- **PowerShell:** kontrolní skript ověřuje síť, DNS, doménu a služby. Na serveru prošlo 13 kontrol, na klientovi 8. [Výsledky](evidence/health-checks.md).
 
-| Oblast | Konkrétní práce | Stav a důkaz |
-|---|---|---|
-| Virtualizace a Windows | Server 2025, Windows 11, síť, párový snapshot | [Ověřený základ](evidence/baseline.md) |
-| IP, DNS a porty | statické adresy, A/SRV záznamy, nalezení DC, TCP 445 | [Ověřeno; DNS incident](incidents/INC-001-dns.md) |
-| Active Directory | doména, připojení PC, OU, účty a vnořené skupiny | [Ověřeno](evidence/baseline.json) |
-| SMB a NTFS | čtení/zápis Anně, zamítnutí Petrovi | [Ověřeno; oprava přístupu](incidents/INC-002-share.md) |
-| Group Policy | uživatelská GPO, kontrola výsledku a chování | [Ověřeno i na ploše](evidence/baseline.md) |
-| PowerShell | diagnostické skripty a strukturovaná kontrola stavu | [Skript](scripts/Test-LabHealth.ps1), [výsledky](evidence/health-checks.md) |
-| Servisní práce | stav před poruchou → diagnóza → oprava → opakovaný test | [Dva provedené případy](docs/project.md#servisní-případy) |
-| Nástup a odchod zaměstnance | vytvoření účtu, přidělení a odebrání přístupu | [Připravený postup](operations/employee-lifecycle.md) |
-| DHCP | automatické adresy, scope, lease a rezervace | [Další etapa](docs/project.md#další-etapy) |
-| Záloha, obnova a údržba | obnova souboru, události a audit aktualizací | [Další etapy](docs/project.md#další-etapy) |
+## Pokusy s konfigurací
 
-## Jak projekt projít
+Při změně DNS klient přestal nacházet doménové služby. Při odebrání přístupové skupiny zůstával server dostupný, ale čtení souboru bylo odmítnuté. Oba pokusy mají zaznamenaný stav před změnou, diagnózu a ověření po opravě.
 
-1. [Scénář kanceláře a pracovní úkoly](docs/project.md) — co spravuji a podle čeho poznám výsledek.
-2. [Pojmy na konkrétních příkladech](docs/concepts.md) — IP, DNS, DHCP, doména, OU, skupiny, GPO, SMB a NTFS.
-3. [Instalace](docs/01-installation.md) a [funkční základ](docs/02-baseline.md) — sestavení prostředí.
-4. [Provozní kontrola](operations/daily-check.md) — příkazy a čtení výsledků.
-5. [Servisní případy](docs/project.md#servisní-případy) — diagnostika a opravy.
+| Pokus | Stav |
+|---|---|
+| [Nesprávný DNS server](incidents/INC-001-dns.md) | provedeno a vráceno do funkčního stavu |
+| [Odebrání přístupu ke složce](incidents/INC-002-share.md) | provedeno a vráceno do funkčního stavu |
+| [Zakázaný účet](incidents/INC-003-account.md) | připravený postup |
+| [Neaplikovaná GPO](incidents/INC-004-gpo.md) | připravený postup |
+| [Zapomenuté heslo a zamčený účet](incidents/INC-005-password.md) | připravený postup |
+| [Posunutý čas](incidents/INC-006-time.md) | připravený postup |
 
-Každá praktická úloha končí konkrétním nastavením, testem pod správným účtem, vysvětlením a vybraným důkazem. [Přehled důkazů](docs/verification.md).
+## Další rozšíření
 
-## Rozsah a omezení
+DHCP a přidělování adres, zachycení síťové komunikace, mapování disku přes GPO a záloha s obnovou souboru. Později může přibýt menší aplikace pro zkoušení funkčních testů, API a SQL.
 
-DC01 má 2 vCPU / 2 GB RAM, PC01 2 vCPU / 4 GB RAM. Kvůli prostředkům hostitele je sdílení na řadiči domény; produkční návrh by role oddělil. Windows jsou Evaluation. Windows 11 na použitém procesoru je nepodporovaný experiment. Audit aktuálních oprav, DHCP a obnova záloh zatím nejsou dokončené. Snapshot `baseline-01` uchovává původní funkční základ na obou VM; není náhradou zálohy.
+## Dokumentace a skripty
 
-Do repozitáře patří dokumentace, vlastní skripty a vybrané důkazy. Hesla, instalační obrazy, virtuální disky a původní diagnostické výpisy jsou soukromé. [Zdroje a inspirace](docs/sources.md), [publikace](docs/publication.md).
+- [Přehled hotových částí a dalších pokusů](docs/project.md)
+- [Vysvětlení pojmů na tomto zapojení](docs/concepts.md)
+- [Instalace](docs/01-installation.md) a [nastavení domény](docs/02-baseline.md)
+- [Kontrola stavu](operations/daily-check.md) a [práce s účty](operations/employee-lifecycle.md)
+- [Diagnostický skript](scripts/Test-LabHealth.ps1), [ověření základu](evidence/baseline.md) a [technické zdroje](docs/sources.md)
+
+Server používá 2 vCPU a 2 GB RAM, klient 2 vCPU a 4 GB RAM. Soubory jsou kvůli velikosti labu přímo na doménovém řadiči. Snapshot `baseline-01` na obou strojích uchovává výchozí funkční stav. Hesla, instalační obrazy a virtuální disky nejsou v repozitáři.

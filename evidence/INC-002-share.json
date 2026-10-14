@@ -1,0 +1,59 @@
+{
+  "ObservedAtUtc": "2026-10-14T19:35:33.1481351Z",
+  "Method": "Fresh guestcontrol logon for each account check; no interactive desktop reproduction",
+  "Before": {
+    "ObservedAtUtc": "2026-10-14T19:35:51.4453861Z",
+    "Identity": "LAB\\anna.lab",
+    "ExpectedAccess": "Allow",
+    "ReadSucceeded": true,
+    "WriteSucceeded": true,
+    "DeleteSucceeded": true,
+    "AccessDenied": false,
+    "FailureType": null,
+    "Passed": true
+  },
+  "Broken": {
+    "Identity": "LAB\\anna.lab",
+    "ResolvedAddresses": [
+      "10.10.10.10"
+    ],
+    "Tcp445": true,
+    "Share": {
+      "ObservedAtUtc": "2026-10-14T19:36:08.0604822Z",
+      "Identity": "LAB\\anna.lab",
+      "ExpectedAccess": "Deny",
+      "ReadSucceeded": false,
+      "WriteSucceeded": false,
+      "DeleteSucceeded": false,
+      "AccessDenied": true,
+      "FailureType": "System.UnauthorizedAccessException",
+      "Passed": true
+    },
+    "AccessGroupsAbsent": true
+  },
+  "RestoredMember": true,
+  "After": {
+    "ObservedAtUtc": "2026-10-14T19:36:18.4685483Z",
+    "Identity": "LAB\\anna.lab",
+    "ExpectedAccess": "Allow",
+    "ReadSucceeded": true,
+    "WriteSucceeded": true,
+    "DeleteSucceeded": true,
+    "AccessDenied": false,
+    "FailureType": null,
+    "Passed": true
+  },
+  "Petr": {
+    "ObservedAtUtc": "2026-10-14T19:36:27.2220699Z",
+    "Identity": "LAB\\petr.lab",
+    "ExpectedAccess": "Deny",
+    "ReadSucceeded": false,
+    "WriteSucceeded": false,
+    "DeleteSucceeded": false,
+    "AccessDenied": true,
+    "FailureType": "System.UnauthorizedAccessException",
+    "Passed": true
+  },
+  "AclUnchanged": true,
+  "Passed": true
+}

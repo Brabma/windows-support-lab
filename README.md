@@ -1,39 +1,51 @@
-# Windows Support Lab
+# Windows Support Lab — správa malé firemní sítě
 
-Malá cvičná firemní síť ve dvou virtuálních počítačích. Jeden je server, který spravuje uživatele a jejich práva, druhý je běžný pracovní počítač. Na labu se dají vyzkoušet situace, které řeší technická podpora každý den: uživatel se nepřihlásí, nedostane se ke sdílené složce nebo mu nefunguje nastavení od firmy.
+Praktický projekt Windows Serveru a Windows 11: sestavení malé domény, správa uživatelů a přístupů, nastavení pracovní stanice, síťová diagnostika a řešení servisních požadavků. Prostředí představuje malou kancelář se zaměstnanci Annou a Petrem.
 
-## Co v labu je
+Projekt vzniká s pomocí Codexu. Dosavadní sestavení a ověřovací běhy provedl Codex; samostatné opakování autorem čeká. Výsledky popisují skutečný laboratorní stav, nikoli profesní praxi.
 
-| Počítač | Role | Systém |
+## Prostředí
+
+```mermaid
+flowchart LR
+  A[Anna: povolený přístup] --> P[PC01: Windows 11]
+  B[Petr: bez přístupu ke sdílení] --> P
+  P -->|DNS a doménové služby| D[DC01: Windows Server 2025 / AD DS + DNS + GPO]
+  P -->|SMB: TCP 445| F[Sdílení LabShare na DC01]
+  D --- F
+```
+
+VirtualBox Internal Network `windows-support-isolated`, síť `10.10.10.0/24`. DC01 má `10.10.10.10`, PC01 `10.10.10.20`; klient používá DNS server DC01. Doména `lab.example.test`. Adresy jsou zatím statické, bez DHCP, routeru a výchozí brány. [Úplná topologie](docs/architecture.md).
+
+## Co lze v projektu ověřit
+
+Stav k 14. 10. 2026. „Ověřeno“ znamená skutečnou kontrolu v labu; „připraveno“ znamená popsanou další úlohu.
+
+| Oblast | Konkrétní práce | Stav a důkaz |
 |---|---|---|
-| DC01 | Server: přihlašování uživatelů (Active Directory), překlad jmen v síti (DNS), sdílená složka | Windows Server 2025 |
-| PC01 | Pracovní stanice běžného uživatele | Windows 11 Enterprise |
+| Virtualizace a Windows | Server 2025, Windows 11, síť, párový snapshot | [Ověřený základ](evidence/baseline.md) |
+| IP, DNS a porty | statické adresy, A/SRV záznamy, nalezení DC, TCP 445 | [Ověřeno; DNS incident](incidents/INC-001-dns.md) |
+| Active Directory | doména, připojení PC, OU, účty a vnořené skupiny | [Ověřeno](evidence/baseline.json) |
+| SMB a NTFS | čtení/zápis Anně, zamítnutí Petrovi | [Ověřeno; oprava přístupu](incidents/INC-002-share.md) |
+| Group Policy | uživatelská GPO, kontrola výsledku a chování | [Ověřeno i na ploše](evidence/baseline.md) |
+| PowerShell | diagnostické skripty a strukturovaná kontrola stavu | [Skript](scripts/Test-LabHealth.ps1), [výsledky](evidence/health-checks.md) |
+| Servisní práce | stav před poruchou → diagnóza → oprava → opakovaný test | [Dva provedené případy](docs/project.md#servisní-případy) |
+| Nástup a odchod zaměstnance | vytvoření účtu, přidělení a odebrání přístupu | [Připravený postup](operations/employee-lifecycle.md) |
+| DHCP | automatické adresy, scope, lease a rezervace | [Další etapa](docs/project.md#další-etapy) |
+| Záloha, obnova a údržba | obnova souboru, události a audit aktualizací | [Další etapy](docs/project.md#další-etapy) |
 
-Oba běží ve VirtualBoxu na jednom fyzickém počítači a jsou propojené vlastní sítí oddělenou od domácí. V doméně jsou dva uživatelé: Anna, která má přístup ke sdílené složce, a Petr, který ho nemá. Uživatelům je centrálně zakázaný přístup do Ovládacích panelů, aby bylo na čem zkoušet firemní zásady.
+## Jak projekt projít
 
-Server i pracovní stanice jsou propojené doménou. Přihlášení, oprávnění ke složce, skupinová zásada i první DNS incident prošly kontrolou; výsledky a snímek jsou v [ověření funkčního základu](evidence/baseline.md).
+1. [Scénář kanceláře a pracovní úkoly](docs/project.md) — co spravuji a podle čeho poznám výsledek.
+2. [Pojmy na konkrétních příkladech](docs/concepts.md) — IP, DNS, DHCP, doména, OU, skupiny, GPO, SMB a NTFS.
+3. [Instalace](docs/01-installation.md) a [funkční základ](docs/02-baseline.md) — sestavení prostředí.
+4. [Provozní kontrola](operations/daily-check.md) — příkazy a čtení výsledků.
+5. [Servisní případy](docs/project.md#servisní-případy) — diagnostika a opravy.
 
-## Jak se v repozitáři vyznat
+Každá praktická úloha končí konkrétním nastavením, testem pod správným účtem, vysvětlením a vybraným důkazem. [Přehled důkazů](docs/verification.md).
 
-1. [Instalace](docs/01-installation.md) – jak oba počítače vzniknou.
-2. [Nastavení domény](docs/02-baseline.md) – uživatelé, skupiny, sdílená složka, zásady.
-3. [Zapojení](docs/architecture.md) – adresy, skupiny a proč je to takhle.
-4. [Ověřování](docs/verification.md) a [technické zdroje](docs/sources.md).
+## Rozsah a omezení
 
-## Scénáře závad
+DC01 má 2 vCPU / 2 GB RAM, PC01 2 vCPU / 4 GB RAM. Kvůli prostředkům hostitele je sdílení na řadiči domény; produkční návrh by role oddělil. Windows jsou Evaluation. Windows 11 na použitém procesoru je nepodporovaný experiment. Audit aktuálních oprav, DHCP a obnova záloh zatím nejsou dokončené. Snapshot `baseline-01` uchovává původní funkční základ na obou VM; není náhradou zálohy.
 
-Každý scénář popisuje, co hlásí uživatel, jak závadu v labu navodit, jak ji najít a jak ověřit, že je opravená.
-
-| Scénář | Co hlásí uživatel |
-|---|---|
-| [Počítač nenajde doménu](incidents/INC-001-dns.md) | „Nejde mi přihlášení, píše to, že doména není dostupná.“ |
-| [Odepřený přístup ke složce](incidents/INC-002-share.md) | „Včera jsem se do složky dostala, dnes mi to píše přístup odepřen.“ |
-| [Zakázaný účet](incidents/INC-003-account.md) | „Nepustí mě to do počítače, heslo mám správně.“ |
-| [Zásada se neprojevila](incidents/INC-004-gpo.md) | „Kolega má Ovládací panely zamčené a já ne.“ |
-| [Zapomenuté heslo a zamčený účet](incidents/INC-005-password.md) | „Zapomněl jsem heslo a teď už mě to nepustí vůbec.“ |
-| [Posunutý čas na počítači](incidents/INC-006-time.md) | „Od rána se nepřihlásím, včera to šlo.“ |
-
-## Skripty
-
-- `scripts/New-LabVMs.ps1` – vytvoří oba virtuální počítače se správnou sítí a disky.
-- `scripts/Get-LabDiagnostics.ps1` – vypíše základní stav: síť, DNS, dostupnost serveru, členství v doméně.
+Do repozitáře patří dokumentace, vlastní skripty a vybrané důkazy. Hesla, instalační obrazy, virtuální disky a původní diagnostické výpisy jsou soukromé. [Zdroje a inspirace](docs/sources.md), [publikace](docs/publication.md).

@@ -1,31 +1,37 @@
-# Odepřený přístup ke složce
+# INC-002 — odepřený přístup ke sdílení
 
-**Co hlásí uživatel:** „Včera jsem se do složky dostala, dnes mi to píše přístup odepřen.“
+**Stav: reprodukováno, opraveno a ověřeno Codexem 14. 10. 2026.** Ověření proběhlo příkazy spuštěnými na PC01 pod skutečnými účty Anny a Petra, pro každý test s novým přihlášením přes VirtualBox Guest Control. Interaktivní odhlášení a přihlášení na plochu během tohoto incidentu ani vlastní opakování uživatelem nejsou provedené.
 
-## Jak závadu navodit
+## Servisní záznam
 
-Na DC01 odebrat `anna.lab` ze skupiny `GG_LabStaff`. Oprávnění složky neměnit. Na PC01 Annu odhlásit a znovu přihlásit.
+**Hlášení:** Anna nemůže otevřít `\\DC01\LabShare\welcome.txt`; dostává odepřený přístup.
 
-## Jak se projeví
+| Kontrola | Před poruchou | Během poruchy | Po opravě |
+|---|---|---|---|
+| Anna přečte soubor | ano | ne, UnauthorizedAccessException | ano |
+| Anna vytvoří a smaže vlastní testovací soubor | ano | nezkoušeno po odmítnutí čtení | ano |
+| DNS úplného názvu serveru | 10.10.10.10 | 10.10.10.10 | 10.10.10.10 |
+| Spojení na TCP 445 | dostupné | dostupné | dostupné |
+| Skupiny GG_LabStaff a DL_LabShare_Modify v novém tokenu Anny | původní přístup ověřen | obě chybí | obě přítomné |
 
-Otevření `\\DC01\LabShare\welcome.txt` skončí hláškou o odepřeném přístupu.
+**Příčina:** záměrně odebrané členství `anna.lab` ve skupině `GG_LabStaff`. Skupina je vnořená do `DL_LabShare_Modify`, která opravňuje přístup ke sdílení a souborům. Účet zůstával platný a server dostupný.
 
-## Jak ji najít
+**Oprava:** vráceno původní členství a provedeno nové přihlášení pro ověření. Anna opět čte, zapisuje a maže svůj jedinečný testovací soubor. Petr má nadále odepřený přístup. SMB oprávnění i NTFS SDDL jsou před poruchou a po opravě shodné. Žádná záměrná porucha nezůstává.
 
-1. Je to opravdu oprávnění, a ne síť? `Test-NetConnection DC01 -Port 445` projde, takže server je dostupný. Chyba sítě vypadá jinak než „přístup odepřen“.
-2. `whoami /groups` na PC01 – ve kterých skupinách uživatelka právě je.
-3. Na DC01 členství skupiny v Active Directory.
-4. Na DC01 oprávnění složky:
-   ```powershell
-   Get-SmbShareAccess LabShare
-   icacls C:\LabShare
-   ```
-   Oprávnění složky jsou v pořádku, chybí jen členství ve skupině.
+**Co z toho plyne:** dostupný server neznamená povolený přístup. Nejprve ověř spojení, potom identitu a skupiny uživatele, oprávnění sdílení a NTFS. Oprava členství neznamená okamžitou změnu již existujícího přihlašovacího tokenu; ověřuj v nové relaci.
 
-## Oprava a ověření
+Kontroly: `Resolve-DnsName dc01.lab.example.test`, `Test-NetConnection DC01 -Port 445`, skupinové SID aktuální identity, členství v AD, `Get-SmbShareAccess LabShare` a NTFS ACL. Čistě DNS dotaz na krátké `DC01` při úvodní kontrole vracel SERVFAIL; úplné jméno vracelo správnou adresu a běžný Windows resolver i skutečné čtení přes krátkou UNC cestu fungovaly. Nastavení DNS kvůli tomu nebylo měněno; vyčištěna pouze klientská cache. Přesný mechanismus překladu krátkého jména nebyl měřen.
 
-Vrátit Annu do skupiny, odhlásit a přihlásit, zopakovat čtení i zápis. Zkontrolovat, že Petr přístup dál nemá. Dát všem plný přístup, „aby to fungovalo“, není oprava.
+[Vybrané výsledky testů](../evidence/INC-002-share.json), závěrečné `Passed=true`. Hesla, původní výpisy, skupinové SID a úplné ACL zůstávají v soukromé složce; veřejný výřez obsahuje výsledky a kontroly zachování práv.
 
-## Co si z toho odnést
+## Postup pro vlastní opakování
 
-Přístup ke sdílené složce rozhodují tři věci: oprávnění sdílení, oprávnění na disku a členství uživatele ve skupině. Změna členství se projeví až po novém přihlášení, proto první rada uživateli bývá odhlásit se a přihlásit.
+Před změnou Anna musí prokazatelně číst i zapisovat.
+
+Na DC01 odeber pouze `anna.lab` ze skupiny GG_LabStaff. Neměň současně NTFS ani SMB ACL. Na PC01 Annu úplně odhlásit a znovu přihlásit, aby získala nový token. Reprodukuj přístup k `\\DC01\LabShare\welcome.txt`.
+
+Diagnóza: `whoami /groups` na PC01, členství v AD na DC01, SMB oprávnění a `icacls C:\LabShare`. Ověř TCP 445 a rozlišení DC01. Síťová chyba není stejná jako Access denied. Zaznamenej, zda nebylo použito jiné uložené SMB přihlášení.
+
+Oprava: vrátit původní členství; nová relace; zopakovat čtení i zápis. Petr musí nadále nemít přístup. Nedávat Everyone Full Control jen proto, aby test prošel.
+
+Vlastní opakování a vysvětlení uživatele: čeká. Vysvětli: Jak se liší oprávnění sdílení, NTFS a členství uživatele?

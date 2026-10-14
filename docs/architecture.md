@@ -9,11 +9,11 @@ flowchart LR
 
 ## Síť
 
-Oba počítače mají jednu síťovou kartu ve vlastní vnitřní síti VirtualBoxu (`windows-support-isolated`). Do domácí sítě ani na internet z ní nevede cesta, takže pokusy nic neohrozí. Adresy jsou nastavené ručně, v síti není DHCP ani router.
+Oba počítače mají jednu síťovou kartu ve vlastní vnitřní síti VirtualBoxu (`windows-support-isolated`). Do domácí sítě ani na internet z ní nevede cesta; změny se provádějí uvnitř labu. Adresy jsou nastavené ručně, v síti není DHCP ani router.
 
 | Počítač | Adresa | DNS server | Brána |
 |---|---|---|---|
-| DC01 | 10.10.10.10 / 24 | 10.10.10.10 | žádná |
+| DC01 | 10.10.10.10 / 24 | vlastní DNS, aktuálně 127.0.0.1 | žádná |
 | PC01 | 10.10.10.20 / 24 | 10.10.10.10 | žádná |
 
 Doména se jmenuje `lab.example.test`, krátce `LAB`.
@@ -52,3 +52,5 @@ Správci mají plný přístup. V malém labu je složka přímo na serveru dom�
 ## Firemní zásada
 
 Zásada `LAB-User-ControlPanel` zakazuje uživatelům Ovládací panely a Nastavení (User Configuration → Administrative Templates → Control Panel → Prohibit access to Control Panel and PC settings). Je připojená ke složce `Users`. Výchozí zásada domény se pro tohle cvičení nemění.
+
+Na DC01 znamená DNS 127.0.0.1 jeho vlastní službu. Na PC01 by stejná adresa ukazovala na klienta, který DNS neposkytuje; klient proto používá 10.10.10.10. [Provozní kontrola](../evidence/health-checks.md) rozlišuje obě role a ověřuje skutečné A/SRV odpovědi.

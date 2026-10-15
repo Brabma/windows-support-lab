@@ -4,7 +4,7 @@ Výsledky z 14. října 2026:
 
 | Kontrola | Výsledek |
 |---|---|
-| Systém | Windows 11 Enterprise Evaluation, build 26300 |
+| Systém | Windows 11 Enterprise Evaluation |
 | Jméno | PC01 |
 | Aktivace | LicenseStatus=1 |
 | Guest Additions | 7.2.20, VBoxService Running |

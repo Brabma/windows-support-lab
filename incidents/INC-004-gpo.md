@@ -4,11 +4,11 @@
 
 ## Jak závadu navodit
 
-Na DC01 v Group Policy Management vypnout připojení zásady `LAB-User-ControlPanel` ke složce `Users` (Link Enabled). Zásadu samotnou nemazat. Na PC01 jako Anna spustit `gpupdate /force`.
+Na DC01 v Active Directory Users and Computers přesunout účet `anna.lab` z OU `Lab/Users` o úroveň výš do OU `Lab`. Zásadu ani její připojení neměnit. Účet `petr.lab` zůstává v OU `Lab/Users`. Na PC01 se Anna odhlásí, znovu přihlásí a spustí `gpupdate /force`.
 
 ## Jak se projeví
 
-Ovládací panely jdou otevřít a zásada chybí ve výpisu použitých zásad.
+Anně jdou Ovládací panely otevřít a zásada chybí ve výpisu použitých zásad. U Petra zůstávají zablokované.
 
 ## Jak ji najít
 
@@ -16,19 +16,26 @@ Ovládací panely jdou otevřít a zásada chybí ve výpisu použitých zásad.
 gpresult /r /scope:user
 ```
 
+Na DC01:
+
+```powershell
+Get-ADUser anna.lab | Select-Object DistinguishedName
+Get-ADUser petr.lab | Select-Object DistinguishedName
+```
+
 Projít postupně:
 
-1. Je přihlášený správný uživatel a je ve správné složce Active Directory?
-2. Je zásada ke složce připojená a je připojení zapnuté?
-3. Smí ji uživatel číst (Security Filtering)?
+1. Je přihlášený správný uživatel a je ve správné OU?
+2. Je zásada k OU připojená a je připojení zapnuté (Link Enabled)?
+3. Smí ji uživatel číst a použít (Security Filtering)? Od aktualizace MS16-072 musí uživatelskou zásadu číst i účet počítače. Při úpravě Security Filtering proto na záložce Delegation zůstává Authenticated Users (nebo Domain Computers) s oprávněním Read.
 4. Je server dostupný? (`nltest /dsgetdc:lab.example.test`)
 
-Tahle zásada se týká uživatele, ne počítače. Rozhoduje tedy, kde v Active Directory je účet Anny, ne kde je PC01.
+Tahle zásada se týká uživatele, ne počítače. Rozhoduje tedy, ve které OU je účet Anny, ne kde je PC01. Porovnání `DistinguishedName` obou účtů ukáže rozdíl.
 
 ## Oprava a ověření
 
-Zapnout připojení zásady, `gpupdate /force`, zkontrolovat `gpresult` a zkusit otevřít Ovládací panely.
+Vrátit účet `anna.lab` do OU `Lab/Users`, na PC01 se odhlásit, přihlásit, spustit `gpupdate /force`, zkontrolovat `gpresult` a zkusit otevřít Ovládací panely.
 
 ## Co si z toho odnést
 
-Zásada existuje ve třech krocích: je vytvořená, je připojená ke složce a je použitá u konkrétního uživatele. Selhat může každý z nich a `gpresult` ukáže, u kterého to skončilo.
+Zásada působí ve třech krocích: je vytvořená, je připojená k OU a je použitá u konkrétního uživatele. Selhat může každý z nich a `gpresult` ukáže, u kterého to skončilo. Stejný výsledek by mělo vypnutí připojení zásady, to by se ale projevilo u všech uživatelů v OU najednou.

@@ -2,7 +2,7 @@
 
 Účel: po startu, změně nebo návratu z odpovídajících snapshotů ověřit, že adresář, DNS a souborová služba stále fungují. Chybu neskrývat automatickou opravou.
 
-1. Spustit DC01, počkat na služby a pak PC01. Otevřít konzole, aby bylo vidět, které prostředí se spravuje.
+1. Spustit DC01, počkat na služby a pak PC01. Otevřít okna obou VM, aby bylo jasné, na kterém stroji se příkazy spouštějí.
 2. V každé VM v administrátorském PowerShellu spustit [Test-LabHealth.ps1](../scripts/Test-LabHealth.ps1). Skript je třeba nejprve předat do VM. Nepoužívá VirtualBox ani uložená hesla.
 
 ```powershell

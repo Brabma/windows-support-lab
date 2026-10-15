@@ -9,6 +9,7 @@
 - [VirtualBox 7.2](https://docs.oracle.com/en/virtualization/virtualbox/7.2/user/): virtuální síť, snapshoty, Guest Additions a správa VM.
 
 Inspirace rozsahem scénářů: [Help-Desk-Homelab](https://github.com/RyanRFrechette/Help-Desk-Homelab) a [active-directory-lab](https://github.com/DemRamenNoodles/active-directory-lab).
+
 ## Zdroje pro rozšíření projektu, ověřené 14. 10. 2026
 
 - [AD DS overview](https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview): úloha adresáře a doménového řadiče.

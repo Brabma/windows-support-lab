@@ -7,7 +7,7 @@ Výsledky kontrol na DC01 z 13. října 2026.
 | Operační systém | Windows Server 2025 Standard Evaluation, build 26100 |
 | Aktivace | úspěšná, zkušební doba 180 dní |
 | Doména | `lab.example.test` (krátce LAB), server domény DC01 |
-| Síť | 10.10.10.10/24, DNS 10.10.10.10, vnitřní síť labu |
+| Síť | 10.10.10.10/24, DNS 10.10.10.10 (výpis z 13. 10.; 14. 10. už server používal 127.0.0.1, viz [provozní kontrola](health-checks.md)), vnitřní síť labu |
 | Služby | ADWS, DFSR, DNS, Netlogon a NTDS běží |
 | Záznam pro hledání serveru | `_ldap._tcp.dc._msdcs.lab.example.test` vrací `dc01.lab.example.test`, port 389 |
 | Diagnostika `dcdiag` | Connectivity, Advertising, SysVolCheck, NetLogons a Services prošly |
@@ -20,7 +20,7 @@ Výsledky kontrol na DC01 z 13. října 2026.
 
 ## Zásada
 
-`LAB-User-ControlPanel` je připojená ke složce `Users` a nastavuje `HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\NoControlPanel=1`.
+`LAB-User-ControlPanel` je připojená k OU `Lab/Users` a nastavuje `HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\NoControlPanel=1`.
 
 ## Poznámky z instalace
 

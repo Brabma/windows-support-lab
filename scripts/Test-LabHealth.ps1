@@ -66,6 +66,7 @@ if ($env:COMPUTERNAME -eq 'PC01') {
 $report=[ordered]@{
   ObservedAtUtc=[DateTime]::UtcNow.ToString('o')
   Computer=$env:COMPUTERNAME
+  ScriptSha256=if($PSCommandPath){(Get-FileHash -LiteralPath $PSCommandPath -Algorithm SHA256).Hash}else{$null}
   Scope='Laboratory configuration and reachability; does not prove normal-user access, GPO effect, updates or backup'
   Passed=@($checks | Where-Object {-not $_.Passed}).Count -eq 0
   Checks=@($checks.ToArray())

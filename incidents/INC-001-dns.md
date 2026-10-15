@@ -13,7 +13,7 @@ Resolve-DnsName -Type SRV _ldap._tcp.dc._msdcs.lab.example.test
 nltest /dsgetdc:lab.example.test /force
 ```
 
-Oba příkazy selžou. Počítač si část odpovědí pamatuje, takže se závada nemusí ukázat hned; paměť vyčistí `Clear-DnsClientCache`.
+Počítač nedostane odpověď na dotaz, kde běží řadič domény. Část odpovědí si pamatuje, takže se závada nemusí ukázat hned; paměť vyčistí `Clear-DnsClientCache`. Dříve přihlášený uživatel se může přihlásit pomocí uložených údajů; přihlášení selže hlavně u účtu, který se na počítači ještě nepřihlašoval.
 
 ## Jak ji najít
 
@@ -22,11 +22,22 @@ Oba příkazy selžou. Počítač si část odpovědí pamatuje, takže se záva
    ```powershell
    Resolve-DnsName -Type SRV _ldap._tcp.dc._msdcs.lab.example.test -Server 10.10.10.10
    ```
-   Když tohle odpoví, server je v pořádku a chyba je v nastavení počítače.
+   Když tento dotaz odpoví, DNS na DC01 je z klienta dostupné. Porovnání s dotazem bez parametru `-Server` pomůže odhalit chybný DNS server klienta; samo neověřuje všechny doménové služby.
 
 ## Oprava a ověření
 
 Vrátit DNS na 10.10.10.10, `Clear-DnsClientCache`, zopakovat oba příkazy z úvodu a `Test-ComputerSecureChannel`. Vypínat firewall není řešení.
+
+## Výsledek 14. 10. 2026
+
+| Krok | Výsledek |
+|---|---|
+| Před změnou | SRV dotaz vrátil `dc01.lab.example.test` |
+| DNS 10.10.10.99 | SRV dotaz skončil timeoutem (`ERROR_TIMEOUT`) |
+| Dotaz přímo na 10.10.10.10 | vrátil `dc01.lab.example.test`, server tedy fungoval |
+| Po vrácení DNS 10.10.10.10 | SRV dotaz opět prošel, secure channel `True` |
+
+V tomto běhu se měřil DNS dotaz; `nltest` a přihlášení nového uživatele se během závady nezkoušely. [Výsledky v JSON](../evidence/baseline.json) (část `DnsIncident`).
 
 ## Co si z toho odnést
 

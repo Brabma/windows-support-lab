@@ -14,6 +14,8 @@
 | Spojení na TCP 445 | dostupné | dostupné | dostupné |
 | Skupiny GG_LabStaff a DL_LabShare_Modify v novém tokenu Anny | původní přístup ověřen | obě chybí | obě přítomné |
 
+V JSON znamená `false` u zápisu a mazání během poruchy, že se po odmítnutém čtení už nezkoušely.
+
 **Příčina:** záměrně odebrané členství `anna.lab` ve skupině `GG_LabStaff`. Skupina je vnořená do `DL_LabShare_Modify`, která opravňuje přístup ke sdílení a souborům. Účet zůstával platný a server dostupný.
 
 **Oprava:** vráceno původní členství a provedeno nové přihlášení pro ověření. Anna opět čte, zapisuje a maže svůj jedinečný testovací soubor. Petr má nadále odepřený přístup. SMB oprávnění i NTFS SDDL jsou před poruchou a po opravě shodné. Žádná záměrná porucha nezůstává.

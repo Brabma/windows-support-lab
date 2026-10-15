@@ -52,7 +52,7 @@ Unlock-ADAccount petr.lab
 
 ## Ověření a návrat
 
-Petr se na PC01 přihlásí a při resetu změní heslo; dotaz na DC01 vrátí `LockedOut=False`. Přístup Petra ke sdílení zůstává odepřený podle jeho oprávnění.
+Petr se na PC01 přihlásí a při prvním přihlášení si nastaví nové heslo; dotaz na DC01 vrátí `LockedOut=False`. Přístup Petra ke sdílení zůstává odepřený podle jeho oprávnění.
 
 Po cvičení odstranit odkaz i zásadu `LAB-Account-Lockout` a na DC01 spustit `gpupdate /force`. V téže správcovské relaci obnovit hodnoty uložené před cvičením:
 

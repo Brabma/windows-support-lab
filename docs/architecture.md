@@ -51,6 +51,6 @@ Správci mají plný přístup. V malém labu je složka přímo na serveru dom�
 
 ## Firemní zásada
 
-Zásada `LAB-User-ControlPanel` zakazuje uživatelům Ovládací panely a Nastavení (User Configuration → Administrative Templates → Control Panel → Prohibit access to Control Panel and PC settings). Je připojená ke složce `Users`. Výchozí zásada domény se pro tohle cvičení nemění.
+Zásada `LAB-User-ControlPanel` zakazuje uživatelům Ovládací panely a Nastavení (User Configuration → Administrative Templates → Control Panel → Prohibit access to Control Panel and PC settings). Je připojená k OU `Lab/Users` (organizační jednotce, nikoli výchozímu kontejneru `Users`). Výchozí zásada domény se pro tohle cvičení nemění.
 
 Na DC01 znamená DNS 127.0.0.1 jeho vlastní službu. Na PC01 by stejná adresa ukazovala na klienta, který DNS neposkytuje; klient proto používá 10.10.10.10. [Provozní kontrola](../evidence/health-checks.md) rozlišuje obě role a ověřuje skutečné A/SRV odpovědi.

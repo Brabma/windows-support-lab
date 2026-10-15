@@ -11,6 +11,7 @@ PC01 přebírá čas z `dc01.lab.example.test`. Měření 14. října ukázalo r
 1. Při vypnutém PC01 na fyzickém hostiteli vypnout přebírání času přes VirtualBox. Zaznamenat původní hodnotu:
 
    ```powershell
+   # Cesta podle instalace; výchozí je C:\Program Files\Oracle\VirtualBox\VBoxManage.exe.
    $vbox = 'D:\Program Files\Oracle\VBoxManage.exe'
    & $vbox getextradata PC01 'VBoxInternal/Devices/VMMDev/0/Config/GetHostTimeDisabled'
    & $vbox setextradata PC01 'VBoxInternal/Devices/VMMDev/0/Config/GetHostTimeDisabled' 1
@@ -31,7 +32,7 @@ PC01 přebírá čas z `dc01.lab.example.test`. Měření 14. října ukázalo r
    klist get cifs/DC01.lab.example.test
    ```
 
-Kerberos při výchozí politice připouští rozdíl pěti minut. Po hodinovém posunu očekává scénář chybu časového rozdílu při získání nového lístku. Samotné odhlášení nestačí jako spolehlivý test: zapamatované přihlášení nebo již otevřené spojení ke složce může stále fungovat.
+Kerberos při výchozí politice připouští rozdíl pěti minut. Po hodinovém posunu scénář očekává chybu při získání nového lístku; skutečný výsledek zatím není změřený. Pokud klient lístek získá, zaznamená se i tento výsledek spolu s odchylkou času a událostmi Kerberos, nikoli předpokládané selhání. Samotné odhlášení nestačí jako spolehlivý test: zapamatované přihlášení nebo již otevřené spojení ke složce může stále fungovat.
 
 ## Diagnostika
 

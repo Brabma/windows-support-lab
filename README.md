@@ -46,4 +46,4 @@ DHCP a přidělování adres, zachycení síťové komunikace, mapování disku 
 - [Kontrola stavu](operations/daily-check.md) a [práce s účty](operations/employee-lifecycle.md)
 - [Diagnostický skript](scripts/Test-LabHealth.ps1), [ověření základu](evidence/baseline.md) a [technické zdroje](docs/sources.md)
 
-Server používá 2 vCPU a 2 GB RAM, klient 2 vCPU a 4 GB RAM. Soubory jsou kvůli velikosti labu přímo na doménovém řadiči. Snapshot `baseline-01` na obou strojích uchovává výchozí funkční stav. Hesla, instalační obrazy a virtuální disky nejsou v repozitáři.
+Server používá 2 vCPU a 2 GB RAM, klient 2 vCPU a 4 GB RAM. Vytvářecí skript nastavuje oběma VM 4 GB; paměť serveru byla po vytvoření snížena. Soubory jsou kvůli velikosti labu přímo na doménovém řadiči. Snapshot `baseline-01` na obou strojích uchovává výchozí funkční stav. Hesla, instalační obrazy a virtuální disky nejsou v repozitáři.

@@ -19,7 +19,9 @@ Resolve-DnsName -Type SRV _ldap._tcp.dc._msdcs.lab.example.test
 
 Služby mají být Running a poslední příkaz má vrátit DC01. To je záznam, podle kterého počítače v síti najdou server pro přihlášení.
 
-**4. Uživatelé a skupiny.** Active Directory Users and Computers: vytvořit složky, účty a skupiny podle [zapojení](architecture.md).
+Při povýšení Windows obvykle přepne DNS serveru na 127.0.0.1; v tomto labu ho tak server používal 14. 10. Adresa 10.10.10.10 i 127.0.0.1 vedou na jeho vlastní DNS; klienti dál používají 10.10.10.10.
+
+**4. Uživatelé a skupiny.** Active Directory Users and Computers: vytvořit organizační jednotky (OU), účty a skupiny podle [zapojení](architecture.md).
 
 ## Pracovní stanice PC01
 
@@ -59,7 +61,7 @@ Pozor: změna členství ve skupině se projeví až po novém přihlášení.
 
 ## Firemní zásada
 
-**10.** Na serveru v Group Policy Management vytvořit `LAB-User-ControlPanel`, zapnout zákaz Ovládacích panelů a připojit ke složce `Users`. Na PC01 jako Anna:
+**10.** Na serveru v Group Policy Management vytvořit `LAB-User-ControlPanel`, zapnout zákaz Ovládacích panelů a připojit k OU `Lab/Users`. Na PC01 jako Anna:
 
 ```powershell
 gpupdate /force
@@ -72,4 +74,4 @@ Zásada má být ve výpisu mezi použitými a Ovládací panely nemají jít ot
 
 **11.** Oba počítače vypnout a u obou udělat snapshot `baseline-01`. Při návratu vždy obnovit oba najednou, jinak se rozejde jejich vzájemná důvěra a čas.
 
-Teprve z tohoto bodu má smysl pouštět se do [scénářů závad](../README.md#scénáře-závad): po každém se dá vrátit do funkčního stavu.
+Teprve z tohoto bodu má smysl pouštět se do [pokusů s konfigurací](../README.md#pokusy-s-konfigurací): po každém se dá vrátit do funkčního stavu.

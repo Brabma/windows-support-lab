@@ -1,7 +1,7 @@
 {
-  "ObservedAtUtc": "2026-10-15T10:49:33.1582545Z",
+  "ObservedAtUtc": "2026-10-15T10:51:05.2023414Z",
   "Computer": "DC01",
-  "ScriptSha256": "ED455C86BB09C5275CC96E0136A3718940A2868CAD8E575A1A84B798A9AA15BD",
+  "ScriptSha256": "5F32226F179946AC39672B6888095DF6ACF16C086F99C1C1390AAB3DBE46ACFC",
   "Scope": "Laboratory configuration and reachability; does not prove normal-user access, GPO effect, updates or backup",
   "Passed": true,
   "Checks": [

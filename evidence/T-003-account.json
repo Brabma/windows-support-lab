@@ -1,0 +1,46 @@
+{
+    "ObservedAtUtc":  "2026-10-18T14:13:49Z",
+    "Method":  "Fresh guestcontrol logon as anna.lab on PC01 for each check; AD queries on DC01",
+    "Before":  {
+                   "Enabled":  true,
+                   "LockedOut":  false,
+                   "PasswordExpired":  false,
+                   "ShareReadWriteDelete":  true
+               },
+    "Fault":  {
+                  "AtUtc":  "2026-10-18T14:14:01Z",
+                  "Action":  "Disable-ADAccount anna.lab",
+                  "Enabled":  false,
+                  "LockedOut":  false,
+                  "PasswordExpired":  false
+              },
+    "LogonDuringFault":  {
+                             "AtUtc":  "2026-10-18T14:14:10Z",
+                             "Succeeded":  false,
+                             "Error":  "The specified user account on the guest is restricted and can\u0027t be used to logon"
+                         },
+    "Diagnosis":  {
+                      "SearchADAccountDisabled":  [
+                                                      "krbtgt",
+                                                      "anna.lab",
+                                                      "Guest"
+                                                  ],
+                      "SearchADAccountLockedOut":  [
+
+                                                   ],
+                      "Event4725":  {
+                                        "TimeCreatedUtc":  "2026-10-18T14:14:04Z",
+                                        "TargetUserName":  "anna.lab"
+                                    }
+                  },
+    "Repair":  {
+                   "Action":  "Enable-ADAccount anna.lab",
+                   "Enabled":  true
+               },
+    "After":  {
+                  "AtUtc":  "2026-10-18T14:14:46Z",
+                  "LogonSucceeded":  true,
+                  "ShareReadWriteDelete":  true
+              },
+    "Passed":  true
+}

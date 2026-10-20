@@ -1,0 +1,192 @@
+{
+  "Method": "Exact public Test-LabHealth.ps1 source executed inside each VM through private guestcontrol transport",
+  "Reports": [
+    {
+      "Computer": "DC01",
+      "ObservedAtUtc": "2026-10-14T19:53:17.5255541Z",
+      "Passed": true,
+      "Scope": "Laboratory configuration and reachability; does not prove normal-user access, GPO effect, updates or backup",
+      "Checks": [
+        {
+          "Name": "DomainMembership",
+          "Passed": true,
+          "Observed": {
+            "PartOfDomain": true,
+            "Domain": "lab.example.test"
+          },
+          "Error": null
+        },
+        {
+          "Name": "IPv4Configuration",
+          "Passed": true,
+          "Observed": [
+            {
+              "IPAddress": "10.10.10.10",
+              "PrefixLength": 24
+            }
+          ],
+          "Error": null
+        },
+        {
+          "Name": "ClientDNS",
+          "Passed": true,
+          "Observed": [
+            "127.0.0.1"
+          ],
+          "Error": null
+        },
+        {
+          "Name": "IsolatedNoDefaultRoute",
+          "Passed": true,
+          "Observed": [],
+          "Error": null
+        },
+        {
+          "Name": "DNSHostA",
+          "Passed": true,
+          "Observed": [
+            "10.10.10.10"
+          ],
+          "Error": null
+        },
+        {
+          "Name": "DNSLdapSrv",
+          "Passed": true,
+          "Observed": [
+            {
+              "NameTarget": "dc01.lab.example.test",
+              "Port": 389
+            }
+          ],
+          "Error": null
+        },
+        {
+          "Name": "SMBTcp445",
+          "Passed": true,
+          "Observed": {
+            "Port": 445,
+            "Connected": true,
+            "Address": "10.10.10.10"
+          },
+          "Error": null
+        },
+        {
+          "Name": "Service-DNS",
+          "Passed": true,
+          "Observed": "Running",
+          "Error": null
+        },
+        {
+          "Name": "Service-NTDS",
+          "Passed": true,
+          "Observed": "Running",
+          "Error": null
+        },
+        {
+          "Name": "Service-Netlogon",
+          "Passed": true,
+          "Observed": "Running",
+          "Error": null
+        },
+        {
+          "Name": "Service-ADWS",
+          "Passed": true,
+          "Observed": "Running",
+          "Error": null
+        },
+        {
+          "Name": "Service-DFSR",
+          "Passed": true,
+          "Observed": "Running",
+          "Error": null
+        },
+        {
+          "Name": "LabSharePublished",
+          "Passed": true,
+          "Observed": {
+            "Name": "LabShare",
+            "Path": "C:\\LabShare"
+          },
+          "Error": null
+        }
+      ]
+    },
+    {
+      "Computer": "PC01",
+      "ObservedAtUtc": "2026-10-14T19:53:19.8990696Z",
+      "Passed": true,
+      "Scope": "Laboratory configuration and reachability; does not prove normal-user access, GPO effect, updates or backup",
+      "Checks": [
+        {
+          "Name": "DomainMembership",
+          "Passed": true,
+          "Observed": {
+            "PartOfDomain": true,
+            "Domain": "lab.example.test"
+          },
+          "Error": null
+        },
+        {
+          "Name": "IPv4Configuration",
+          "Passed": true,
+          "Observed": [
+            {
+              "IPAddress": "10.10.10.20",
+              "PrefixLength": 24
+            }
+          ],
+          "Error": null
+        },
+        {
+          "Name": "ClientDNS",
+          "Passed": true,
+          "Observed": [
+            "10.10.10.10"
+          ],
+          "Error": null
+        },
+        {
+          "Name": "IsolatedNoDefaultRoute",
+          "Passed": true,
+          "Observed": [],
+          "Error": null
+        },
+        {
+          "Name": "DNSHostA",
+          "Passed": true,
+          "Observed": [
+            "10.10.10.10"
+          ],
+          "Error": null
+        },
+        {
+          "Name": "DNSLdapSrv",
+          "Passed": true,
+          "Observed": [
+            {
+              "NameTarget": "dc01.lab.example.test",
+              "Port": 389
+            }
+          ],
+          "Error": null
+        },
+        {
+          "Name": "SMBTcp445",
+          "Passed": true,
+          "Observed": {
+            "Port": 445,
+            "Connected": true,
+            "Address": "10.10.10.10"
+          },
+          "Error": null
+        },
+        {
+          "Name": "SecureChannel",
+          "Passed": true,
+          "Observed": true,
+          "Error": null
+        }
+      ]
+    }
+  ]
+}

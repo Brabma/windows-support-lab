@@ -1,0 +1,111 @@
+{
+  "ObservedAtUtc": "2026-10-15T10:51:05.2023414Z",
+  "Computer": "DC01",
+  "ScriptSha256": "5F32226F179946AC39672B6888095DF6ACF16C086F99C1C1390AAB3DBE46ACFC",
+  "Scope": "Laboratory configuration and reachability; does not prove normal-user access, GPO effect, updates or backup",
+  "Passed": true,
+  "Checks": [
+    {
+      "Name": "DomainMembership",
+      "Passed": true,
+      "Observed": {
+        "PartOfDomain": true,
+        "Domain": "lab.example.test"
+      },
+      "Error": null
+    },
+    {
+      "Name": "IPv4Configuration",
+      "Passed": true,
+      "Observed": [
+        {
+          "IPAddress": "10.10.10.10",
+          "PrefixLength": 24
+        }
+      ],
+      "Error": null
+    },
+    {
+      "Name": "ClientDNS",
+      "Passed": true,
+      "Observed": [
+        "127.0.0.1"
+      ],
+      "Error": null
+    },
+    {
+      "Name": "IsolatedNoDefaultRoute",
+      "Passed": true,
+      "Observed": [],
+      "Error": null
+    },
+    {
+      "Name": "DNSHostA",
+      "Passed": true,
+      "Observed": [
+        "10.10.10.10"
+      ],
+      "Error": null
+    },
+    {
+      "Name": "DNSLdapSrv",
+      "Passed": true,
+      "Observed": [
+        {
+          "NameTarget": "dc01.lab.example.test",
+          "Port": 389
+        }
+      ],
+      "Error": null
+    },
+    {
+      "Name": "SMBTcp445",
+      "Passed": true,
+      "Observed": {
+        "Port": 445,
+        "Connected": true,
+        "Address": "10.10.10.10"
+      },
+      "Error": null
+    },
+    {
+      "Name": "Service-DNS",
+      "Passed": true,
+      "Observed": "Running",
+      "Error": null
+    },
+    {
+      "Name": "Service-NTDS",
+      "Passed": true,
+      "Observed": "Running",
+      "Error": null
+    },
+    {
+      "Name": "Service-Netlogon",
+      "Passed": true,
+      "Observed": "Running",
+      "Error": null
+    },
+    {
+      "Name": "Service-ADWS",
+      "Passed": true,
+      "Observed": "Running",
+      "Error": null
+    },
+    {
+      "Name": "Service-DFSR",
+      "Passed": true,
+      "Observed": "Running",
+      "Error": null
+    },
+    {
+      "Name": "LabSharePublished",
+      "Passed": true,
+      "Observed": {
+        "Name": "LabShare",
+        "Path": "C:\\LabShare"
+      },
+      "Error": null
+    }
+  ]
+}

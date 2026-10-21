@@ -23,7 +23,7 @@ Postup od sítě k oprávněním:
 
 ## Řešení a ověření
 
-Anna vrácena do `GG_LabStaff`. Po novém přihlášení soubor přečte, vytvoří i smaže vlastní testovací soubor. Petrovi zůstává přístup odepřený a oprávnění složky jsou stejná jako před závadou. Výsledky jsou v [evidence/INC-002-share.json](../evidence/INC-002-share.json).
+Anna vrácena do `GG_LabStaff`. Po novém přihlášení soubor přečte, vytvoří i smaže vlastní testovací soubor. Petrovi zůstává přístup odepřený a oprávnění složky jsou stejná jako před závadou. Výsledky jsou v [evidence/T-002-share.json](../evidence/T-002-share.json).
 
 Oprávnění se neopravovala přidáním `Everyone` s plným přístupem; to by problém skrylo a otevřelo složku všem.
 

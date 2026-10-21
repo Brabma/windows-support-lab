@@ -16,6 +16,14 @@ Oba stroje běží ve VirtualBoxu na jednom fyzickém počítači. Jsou propojen
 - **Nastavení pomocí GPO.** Skupinová zásada blokuje běžným uživatelům Ovládací panely. Účinek je ověřený v uživatelské relaci ([snímek](evidence/anna-control-panel-blocked.png)).
 - **Kontrola stavu PowerShellem.** Skript prověří síť, DNS, nalezení řadiče domény a dostupnost služeb. Uložený běh obsahuje 13 úspěšných kontrol serveru a 8 kontrol pracovní stanice; [výsledky jsou zde](evidence/README.md).
 
+## Příklady řešených závad
+
+Každý příklad popisuje příznak, hledání příčiny, opravu a kontrolu výsledku.
+
+- [Počítač nenajde doménu](tickets/T-001-domena-nedostupna.md) – chybně nastavený DNS server.
+- [Uživatel nemůže otevřít sdílenou složku](tickets/T-002-pristup-ke-slozce.md) – chybějící členství ve skupině.
+- [Uživatel se nemůže přihlásit](tickets/T-003-zakazany-ucet.md) – zakázaný účet.
+
 ## K čemu slouží použité technologie
 
 | Technologie | Úloha v projektu |
